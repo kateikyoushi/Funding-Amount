@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factoring Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f5f5f5;
+        }
+        .calculator {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            animation: fadeIn 1s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .result, .steps {
+            display: none;
+            padding: 10px;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .steps p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+        .visible {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <h2>Factoring Calculator</h2>
+    <div class="input-group">
+        <label for="invoiceValue">Total Invoice Value (₱):</label>
+        <input type="number" id="invoiceValue" placeholder="e.g., 200000" required>
+    </div>
+    <div class="input-group">
+        <label for="advanceRate">Advance Rate (%):</label>
+        <input type="number" id="advanceRate" placeholder="e.g., 80" required>
+    </div>
+    <div class="input-group">
+        <label for="factoringFee">Factoring Fee (%):</label>
+        <input type="number" id="factoringFee" placeholder="e.g., 5" required>
+    </div>
+    <button onclick="calculateFunding()">Calculate Funding Amount</button>
+    
+    <div id="result" class="result">
+        <h3>Funding Amount: <span id="fundingAmount">₱0.00</span></h3>
+    </div>
+    <div id="steps" class="steps">
+        <h4>Calculation Steps:</h4>
+        <p id="step1"></p>
+        <p id="step2"></p>
+        <p id="step3"></p>
+    </div>
+</div>
+
+<script>
+    function calculateFunding() {
+        const invoiceValue = parseFloat(document.getElementById("invoiceValue").value);
+        const advanceRate = parseFloat(document.getElementById("advanceRate").value) / 100;
+        const factoringFeePercentage = parseFloat(document.getElementById("factoringFee").value) / 100;
+
+        // Calculations
+        const advanceAmount = invoiceValue * advanceRate;
+        const factoringFee = invoiceValue * factoringFeePercentage;
+        const fundingAmount = advanceAmount - factoringFee;
+
+        // Display results
+        document.getElementById("fundingAmount").textContent = `₱${fundingAmount.toFixed(2)}`;
+
+        // Display calculation steps
+        document.getElementById("step1").textContent = `Step 1: Advance Amount = Total Invoice Value * Advance Rate = ₱${invoiceValue} * ${advanceRate * 100}% = ₱${advanceAmount.toFixed(2)}`;
+        document.getElementById("step2").textContent = `Step 2: Factoring Fee = Total Invoice Value * Factoring Fee Percentage = ₱${invoiceValue} * ${factoringFeePercentage * 100}% = ₱${factoringFee.toFixed(2)}`;
+        document.getElementById("step3").textContent = `Step 3: Funding Amount = Advance Amount - Factoring Fee = ₱${advanceAmount.toFixed(2)} - ₱${factoringFee.toFixed(2)} = ₱${fundingAmount.toFixed(2)}`;
+
+        // Show result and steps
+        document.getElementById("result").classList.add("visible");
+        document.getElementById("steps").classList.add("visible");
+    }
+</script>
+
+</body>
+</html>
