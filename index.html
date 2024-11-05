@@ -30,6 +30,7 @@
         h2 {
             text-align: center;
             color: #333;
+            margin-bottom: 20px;
         }
         .input-group {
             margin-bottom: 15px;
@@ -68,12 +69,31 @@
             border-radius: 5px;
             background: #f9f9f9;
         }
-        .steps p {
-            margin: 5px 0;
+        .step {
+            margin-top: 10px;
+            font-weight: bold;
+            animation: fadeInStep 0.6s ease;
+        }
+        .result h3, .steps h4 {
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        .result span {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.4em;
+        }
+        .step-desc {
             font-size: 0.9em;
+            color: #555;
+            font-weight: normal;
         }
         .visible {
             display: block;
+        }
+        @keyframes fadeInStep {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -100,9 +120,15 @@
     </div>
     <div id="steps" class="steps">
         <h4>Calculation Steps:</h4>
-        <p id="step1"></p>
-        <p id="step2"></p>
-        <p id="step3"></p>
+        <div id="step1" class="step">
+            <span>Step 1:</span> Advance Amount = <span class="step-desc">Total Invoice Value * Advance Rate</span>
+        </div>
+        <div id="step2" class="step">
+            <span>Step 2:</span> Factoring Fee = <span class="step-desc">Total Invoice Value * Factoring Fee Percentage</span>
+        </div>
+        <div id="step3" class="step">
+            <span>Step 3:</span> Funding Amount = <span class="step-desc">Advance Amount - Factoring Fee</span>
+        </div>
     </div>
 </div>
 
@@ -117,15 +143,15 @@
         const factoringFee = invoiceValue * factoringFeePercentage;
         const fundingAmount = advanceAmount - factoringFee;
 
-        // Display results
+        // Display the result
         document.getElementById("fundingAmount").textContent = `₱${fundingAmount.toFixed(2)}`;
 
-        // Display calculation steps
-        document.getElementById("step1").textContent = `Step 1: Advance Amount = Total Invoice Value * Advance Rate = ₱${invoiceValue} * ${advanceRate * 100}% = ₱${advanceAmount.toFixed(2)}`;
-        document.getElementById("step2").textContent = `Step 2: Factoring Fee = Total Invoice Value * Factoring Fee Percentage = ₱${invoiceValue} * ${factoringFeePercentage * 100}% = ₱${factoringFee.toFixed(2)}`;
-        document.getElementById("step3").textContent = `Step 3: Funding Amount = Advance Amount - Factoring Fee = ₱${advanceAmount.toFixed(2)} - ₱${factoringFee.toFixed(2)} = ₱${fundingAmount.toFixed(2)}`;
+        // Display calculation steps with details
+        document.getElementById("step1").innerHTML = `<span>Step 1:</span> Advance Amount = ₱${invoiceValue} * ${advanceRate * 100}% = <span class="step-desc">₱${advanceAmount.toFixed(2)}</span>`;
+        document.getElementById("step2").innerHTML = `<span>Step 2:</span> Factoring Fee = ₱${invoiceValue} * ${factoringFeePercentage * 100}% = <span class="step-desc">₱${factoringFee.toFixed(2)}</span>`;
+        document.getElementById("step3").innerHTML = `<span>Step 3:</span> Funding Amount = ₱${advanceAmount.toFixed(2)} - ₱${factoringFee.toFixed(2)} = <span class="step-desc">₱${fundingAmount.toFixed(2)}</span>`;
 
-        // Show result and steps
+        // Show result and steps with fade-in animation
         document.getElementById("result").classList.add("visible");
         document.getElementById("steps").classList.add("visible");
     }
